@@ -3,7 +3,8 @@ import { useParams, useLocation, Link,useHistory } from "react-router-dom";
 import { useActions } from "../customhooks/useActions";
 import { useSelector } from "react-redux";
 import { MessageBox } from "../components/";
-export const CartPage = () => {
+
+const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const { id } = useParams();
   const location = useLocation();
@@ -97,3 +98,5 @@ export const CartPage = () => {
     </div>
   );
 };
+
+export {CartPage}
