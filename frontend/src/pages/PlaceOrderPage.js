@@ -1,10 +1,18 @@
-import React from "react";
-import { CheckoutSteps } from "../components";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { CheckoutSteps, LoadingBox, MessageBox } from "../components";
+import { useSelector,useDispatch } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
+import {useActions} from "../customhooks/useActions"
+import { ORDER_CREATE_RESET } from "../state/action-types";
+
 const PlaceOrderPage = () => {
+  const dispatch=useDispatch()
+  const {createOrder}=useActions()
   const history = useHistory();
   const cart = useSelector((state) => state.cart);
+
+  const orderCreate=useSelector(state=>state.orderCreate)
+  const {loading,success,error,order}=orderCreate
 
   if (!cart.paymentMethod) {
     history.push("/payment");
@@ -23,8 +31,15 @@ const PlaceOrderPage = () => {
   cart.totalPrice = cart.shippingPrice + cart.itemsPrice + cart.taxPrice;
 
   const placeOrderHandler=()=>{
-      
+      createOrder({...cart,orderItems:cart.cartItems})
   }
+
+  useEffect(()=>{
+    if(success){
+      history.push(`/order/${order._id}`)
+      dispatch({type:ORDER_CREATE_RESET})
+    }
+  },[success,order])
   return (
     <div>
       <CheckoutSteps step1 step2 step3 step4 />
@@ -128,6 +143,12 @@ const PlaceOrderPage = () => {
                 disabled={cart.cartItems.length===0}
                 >Place Order</button>  
               </li>
+              {
+                loading && <LoadingBox></LoadingBox>
+              }
+              {
+                error && <MessageBox variant="danger">{error}</MessageBox>
+              }
             </ul>
           </div>
         </div>

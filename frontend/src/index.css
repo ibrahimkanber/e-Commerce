@@ -89,6 +89,11 @@ button.primary {
 }
 button.block {
   width: 100%;
+
+}
+
+button.small{
+  font-size: 1.2rem;
 }
 /* Header */
 header a {
@@ -190,6 +195,10 @@ img.large {
   color: #2020a0;
   background-color: #e0e0ff;
 }
+.alert-success {
+  color:  #20a020;
+  background-color: #eeffe0;
+}
 .alert-danger {
   color: #a02020;
   background-color: #ffe0e0;
@@ -251,4 +260,26 @@ img.large {
     flex:1;
     padding: 1rem;
     font-weight: bold;
+}
+
+/* Table */
+
+.table{
+  width:100%;
+  border-collapse: collapse;
+}
+
+.table tbody tr:nth-child(odd){
+  background-color: #f4f4f4;
+}
+
+.table td,.table th{
+  text-align: left;
+  border:0.1rem solid #e4e4e4;
+  padding: 0.5rem;
+}
+
+.table button{
+  margin: 0 0.2rem;
+
 }

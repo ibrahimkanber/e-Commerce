@@ -4,20 +4,20 @@ import { HomePage } from "./pages/HomePage";
 import { ProductPage } from "./pages/ProductPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { useSelector } from "react-redux";
-import {SignInPage} from "./pages/SignInPage";
-import {useActions} from "./customhooks/useActions"
+import { SignInPage } from "./pages/SignInPage";
+import { useActions } from "./customhooks/useActions";
 import { Shipping } from "./pages/Shipping";
-import { PaymentPage } from "./pages";
+import { OrderDetailPage, OrderHistoryPage, PaymentPage } from "./pages";
 import { PlaceOrderPage } from "./pages";
 function App() {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const { userInfo } = useSelector((state) => state.authSignIn);
-  const {signOut,removeAllFromCart}=useActions()
+  const { signOut, removeAllFromCart } = useActions();
 
-  const signoutHandler=()=>{
-      signOut()
-      removeAllFromCart()
-  }
+  const signoutHandler = () => {
+    signOut();
+    removeAllFromCart();
+  };
 
   return (
     <div className="grid-container">
@@ -41,7 +41,14 @@ function App() {
                 <i className="fa fa-caret-down"></i>
               </Link>
               <ul className="dropdown-content">
-                <Link to="/" onClick={signoutHandler}>Sign Out</Link>
+                <li>
+                  <Link to="/orderhistory">Order History</Link>
+                </li>
+                <li>
+                  <Link to="/" onClick={signoutHandler}>
+                    Sign Out
+                  </Link>
+                </li>
               </ul>
             </div>
           ) : (
@@ -58,6 +65,8 @@ function App() {
         <Route exact path="/shipping" component={Shipping} />
         <Route exact path="/payment" component={PaymentPage} />
         <Route exact path="/placeorder" component={PlaceOrderPage} />
+        <Route exact path="/order/:id" component={OrderDetailPage} />
+        <Route exact path="/orderhistory" component={OrderHistoryPage} />
       </main>
       <footer className="row center">All right reserved</footer>
     </div>

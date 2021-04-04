@@ -1,11 +1,13 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
+import { getOrderDetail, updateOrder,getOrderHistoryList } from "../controlers/orderController.js";
 import { isAuth } from "../middlewares/authMiddleware.js";
 import Order from "../models/orderModel.js"
 const orderRouter = express.Router();
 
+orderRouter.get("/orderlist",isAuth,getOrderHistoryList)
 orderRouter.post(
-  "/",
+"/",
   isAuth,
   asyncHandler(async (req, res) => {
     if (req.body.orderItems.length === 0) {
@@ -27,5 +29,10 @@ orderRouter.post(
     }
   })
 );
+
+
+orderRouter.get("/:id",isAuth,getOrderDetail)
+
+orderRouter.put("/:id/pay",isAuth,updateOrder)
 
 export default orderRouter

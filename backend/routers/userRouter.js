@@ -1,12 +1,9 @@
 import express from "express";
-import { register, signIn } from "../controlers/userControlers.js";
+import { register, seed, signIn } from "../controlers/userControllers.js";
 
 const userRouter = express.Router();
 
-userRouter.get(
-  "/seed",
-  
-);
+userRouter.get("/seed",seed);
 
 userRouter.post("/signin",signIn);
 
