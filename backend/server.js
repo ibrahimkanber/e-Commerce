@@ -49,6 +49,6 @@ app.use('/api/uploads',uploadRouter)
 
 
 const port =process.env.PORT || 5000
-app.listen(5000,()=>{
+app.listen(port,()=>{
     console.log(`Server is ready at http://localhost:${port}`)
 })
