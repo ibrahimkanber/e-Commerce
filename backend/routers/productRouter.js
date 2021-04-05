@@ -2,6 +2,8 @@ import express from "express";
 import asyncHandler from "express-async-handler";
 import Product from "../models/productModel.js";
 import data from "../data.js"
+import {isAdmin,isAuth} from "../middlewares/authMiddleware.js"
+import { createProduct ,updateProduct,deleteProduct} from "../controlers/productController.js";
 const productRouter=express.Router()
 
 productRouter.get("/",asyncHandler(
@@ -33,6 +35,15 @@ productRouter.get("/:id",asyncHandler(
         }
     }
 ))
+
+
+productRouter.post("/",isAuth,isAdmin,createProduct)
+
+productRouter.put("/:id",isAuth,isAdmin,updateProduct)
+
+productRouter.delete("/:id",isAuth,isAdmin,deleteProduct)
+
+
 
 
 

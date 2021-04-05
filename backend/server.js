@@ -4,6 +4,8 @@ import productRouter from "./routers/productRouter.js";
 import userRouter from "./routers/userRouter.js";
 import orderRouter from "./routers/orderRouter.js"
 import dotenv from "dotenv"
+import path from "path"
+import { uploadRouter } from "./routers/uploadRouter.js";
 
 dotenv.config();
 
@@ -43,8 +45,11 @@ app.use((err,req,res,next)=>{
 app.get("/api/products",(req,res)=>{
         res.send(data.products)
 }) */
+const __dirname = path.resolve();
 
 
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+app.use('/api/uploads',uploadRouter)
 app.get("/",(req,res)=>{
     res.send("server is ready")
 })
