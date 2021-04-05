@@ -5,11 +5,13 @@ import { useSelector } from "react-redux";
 import { MessageBox } from "../components/";
 
 const CartPage = () => {
+  
   const cartItems = useSelector((state) => state.cart.cartItems);
   const { id } = useParams();
   const location = useLocation();
-  const history=useHistory()
+  const history=useHistory();
   const { addToCart,removeFromCart } = useActions();
+  
   const qty = location.search ? Number(location.search.split("=")[1]) : 1;
 
   useEffect(() => {

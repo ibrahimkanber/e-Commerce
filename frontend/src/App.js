@@ -7,8 +7,9 @@ import { useSelector } from "react-redux";
 import { SignInPage } from "./pages/SignInPage";
 import { useActions } from "./customhooks/useActions";
 import { Shipping } from "./pages/Shipping";
-import { OrderDetailPage, OrderHistoryPage, PaymentPage } from "./pages";
+import { OrderDetailPage, OrderHistoryPage, PaymentPage, ProfilePage } from "./pages";
 import { PlaceOrderPage } from "./pages";
+import { PrivateRoute } from "./components/PrivateRoute";
 function App() {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const { userInfo } = useSelector((state) => state.authSignIn);
@@ -42,6 +43,9 @@ function App() {
               </Link>
               <ul className="dropdown-content">
                 <li>
+                  <Link to="/profile">User Profile</Link>
+                </li>
+                <li>
                   <Link to="/orderhistory">Order History</Link>
                 </li>
                 <li>
@@ -67,6 +71,7 @@ function App() {
         <Route exact path="/placeorder" component={PlaceOrderPage} />
         <Route exact path="/order/:id" component={OrderDetailPage} />
         <Route exact path="/orderhistory" component={OrderHistoryPage} />
+        <PrivateRoute exact path="/profile" component={ProfilePage} />
       </main>
       <footer className="row center">All right reserved</footer>
     </div>

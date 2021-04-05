@@ -45,3 +45,44 @@ export const register = asyncHandler(async (req, res) => {
     token: generateToken(createdUser),
   });
 });
+
+export const userDetail = asyncHandler(async (req,res) => {
+  console.log(req.params.id)
+  const user=await User.findById(req.params.id)
+
+  if(user){
+      res.send(user);
+  }else{
+    res.status(404).send({message:"User not found"})
+  }
+
+
+
+});
+export const updateUserProfile = asyncHandler(async (req,res) => {
+  const user=await User.findById(req.user._id)
+  console.log("user",user)
+
+  if(user){
+      user.name=req.body.name || user.name
+      user.email=req.body.email || user.email
+      if(req.body.password){
+        user.password=bcrypt.hashSync(req.body.password,8)
+      }
+
+    const updatedUser=await user.save()
+    res.send({
+      _id:updatedUser._id,
+      name:updatedUser.name,
+      email:updatedUser.email,
+      isAdmin:updatedUser.isAdmin,
+      token:generateToken(updatedUser)
+
+    })
+  }else{
+    res.status(404).send({message:"User not found"})
+  }
+
+
+
+});
