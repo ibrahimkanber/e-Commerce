@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { SignInPage } from "./pages/SignInPage";
 import { useActions } from "./customhooks/useActions";
 import { Shipping } from "./pages/Shipping";
-import { OrderDetailPage, OrderHistoryPage, PaymentPage, ProfilePage,ProductListPage,ProductEditPage } from "./pages";
+import { OrderDetailPage, OrderHistoryPage, PaymentPage, ProfilePage,ProductListPage,ProductEditPage, OrderListPage } from "./pages";
 import { PlaceOrderPage } from "./pages";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { AdminRoute } from "./components";
@@ -98,6 +98,7 @@ function App() {
         <Route exact path="/orderhistory" component={OrderHistoryPage} />
         <PrivateRoute exact path="/profile" component={ProfilePage} />
         <AdminRoute exact path="/productlist" component={ProductListPage} />
+        <AdminRoute exact path="/orderlist" component={OrderListPage} />
       </main>
       <footer className="row center">All right reserved</footer>
     </div>

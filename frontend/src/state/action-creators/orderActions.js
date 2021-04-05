@@ -117,7 +117,7 @@ export const getOrderHistory = () => async (dispatch, getState) => {
   } = getState();
 
   try {
-    const { data } = await axios.get("./api/orders/orderlist", {
+    const { data } = await axios.get("/api/orders/orderlist", {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },
@@ -135,6 +135,37 @@ export const getOrderHistory = () => async (dispatch, getState) => {
 
     dispatch({
       type: ActionTypes.ORDER_HISTORY_LIST_FAIL,
+      payload: message
+    });
+  }
+};
+
+export const getAllOrders = () => async (dispatch, getState) => {
+  dispatch({ type: ActionTypes.ORDER_ALL_LIST_REQUEST });
+
+  const {
+    authSignIn: { userInfo },
+  } = getState();
+
+  try {
+    const { data } = await axios.get("/api/orders", {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    });
+
+
+    dispatch({ type: ActionTypes.ORDER_ALL_LIST_SUCCESS, payload: data });
+
+
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    dispatch({
+      type: ActionTypes.ORDER_ALL_LIST_FAIL,
       payload: message,
     });
   }

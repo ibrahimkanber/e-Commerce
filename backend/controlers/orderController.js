@@ -40,3 +40,11 @@ export const getOrderHistoryList=asyncHandler(async(req,res)=>{
 
 })
 
+export const getAllOrders=asyncHandler(async(req,res)=>{
+    
+    const orders=await Order.find({}).populate("user","name")
+    res.send(orders)
+
+
+})
+
