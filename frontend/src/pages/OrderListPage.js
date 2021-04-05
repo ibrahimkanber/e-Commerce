@@ -1,26 +1,39 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { useActions } from "../customhooks/useActions";
 import { LoadingBox, MessageBox } from "../components";
 import { useHistory } from "react-router-dom";
+import { ORDER_DELETE_RESET } from "../state/action-types";
+
 
 const OrderListPage = () => {
-    
+  const dispatch=useDispatch()
   const history = useHistory();
-  const { getAllOrders } = useActions();
+  const { getAllOrders,deleteOrder } = useActions();
   const orderList = useSelector((state) => state.allOrders);
   const { loading, error, orders } = orderList;
-  console.log(orders)
+
+  const orderDeleteInfo=useSelector(state=>state.orderDelete)
+
+  const { loading:loadingDelete, error:errorDelete, success:successDelete } = orderDeleteInfo;
+
   useEffect(() => {
     getAllOrders();
-  }, []);
+    dispatch({type:ORDER_DELETE_RESET})
+  }, [successDelete]);
 
-  const deleteHandler = (order) => {};
+  const deleteHandler = (order) => {
+    if(window.confirm("Are you sure to delete")){
+      deleteOrder(order._id)
+    }
+  };
 
   return (
     <div>
       <div>
-        <h1>Orders History</h1>
+        <h1>Orders</h1>
+        {loadingDelete && <LoadingBox></LoadingBox>}
+        {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
         {loading ? (
           <LoadingBox></LoadingBox>
         ) : error ? (

@@ -5,23 +5,28 @@ import { Link, useParams } from "react-router-dom";
 import { useActions } from "../customhooks/useActions";
 import axios from "axios";
 import { PayPalButton } from "react-paypal-button-v2";
-import { ORDER_PAY_RESET } from "../state/action-types";
+import {  ORDER_DELIVER_RESET, ORDER_PAY_RESET } from "../state/action-types";
+
 const OrderDetailPage = () => {
   const [refresh,setRefresh]=useState(true)
   const { id } = useParams();
   const dispatch=useDispatch()
   const orderDetails = useSelector((state) => state.orderDetail);
   const orderPay = useSelector((state) => state.orderPay);
-
+  const orderDeliver = useSelector((state) => state.orderDeliver);
+  const userInfo = useSelector((state) => state.authSignIn.userInfo);
+console.log(orderDeliver)
   const errorPay = orderPay.error;
   const successPay = orderPay.success;
   const loadingPay=orderPay.loading
+
+  const {loading:loadingDeliver,error:errorDeliver,success:successDeliver}=orderDeliver
 
   const { order, loading, error } = orderDetails;
 
   const [sdkReady, setSdkReady] = useState();
 
-  const { getOrderDetails, payOrder } = useActions();
+  const { getOrderDetails, payOrder,deliverOrder } = useActions();
 
   const addPayPalScript = async () => {
     const { data } = await axios.get("/api/config/paypal");
@@ -38,8 +43,9 @@ const OrderDetailPage = () => {
   };
 
   useEffect(() => {
-    if (!order || successPay || (order && order._id !== id)) {
+    if (!order || successPay || successDeliver || (order && order._id !== id)) {
       dispatch({type:ORDER_PAY_RESET})
+      dispatch({type:ORDER_DELIVER_RESET})
       getOrderDetails(id);
     } else {
       if (!orderDetails?.order.isPaid) {
@@ -50,13 +56,17 @@ const OrderDetailPage = () => {
         }
       }
     }
-  }, [id, order, sdkReady,successPay]);
+  }, [id, order, sdkReady,successPay,successDeliver]);
 
   const successPaymentHandler = (paymentResult) => {
     payOrder(order, paymentResult);
     
     console.log(paymentResult)
   };
+
+  const deliverHandler=()=>{
+      deliverOrder(order._id)
+  }
 
   return loading ? (
     <LoadingBox></LoadingBox>
@@ -187,6 +197,19 @@ const OrderDetailPage = () => {
                   )}
                 </li>
               )}
+              {
+                userInfo.isAdmin && order.isPaid && !order.isDelivered && 
+                (
+                  <li>
+                    <button 
+                    type="button"
+                    onClick={deliverHandler}
+                    className="primary block"
+                    >Deliver Order</button>
+                  </li>
+                )
+
+              }
             </ul>
           </div>
         </div>

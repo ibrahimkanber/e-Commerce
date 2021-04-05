@@ -154,9 +154,7 @@ export const getAllOrders = () => async (dispatch, getState) => {
       },
     });
 
-
     dispatch({ type: ActionTypes.ORDER_ALL_LIST_SUCCESS, payload: data });
-
 
   } catch (error) {
     const message =
@@ -170,3 +168,72 @@ export const getAllOrders = () => async (dispatch, getState) => {
     });
   }
 };
+
+export const deleteOrder = (id) => async (dispatch, getState) => {
+  dispatch({ type: ActionTypes.ORDER_DELETE_REQUEST ,payload:id});
+
+  const {
+    authSignIn: { userInfo },
+  } = getState();
+
+  try {
+    const { data } = await axios.delete( `/api/orders/${id}` , {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    });
+
+    dispatch({ type: ActionTypes.ORDER_DELETE_SUCCESS, payload: data });
+
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    dispatch({
+      type: ActionTypes.ORDER_DELETE_FAIL,
+      payload: message,
+    });
+  }
+};
+
+
+export const deliverOrder = (orderId) => async (
+  dispatch,
+  getState
+) => {
+  dispatch({
+    type: ActionTypes.ORDER_DELIVER_REQUEST,
+    payload: orderId,
+  });
+
+  const {
+    authSignIn: { userInfo },
+  } = getState();
+
+  try {
+    const { data } = await axios.put(
+      `/api/orders/${orderId}/deliver`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+    );
+
+    dispatch({ type: ActionTypes.ORDER_DELIVER_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    dispatch({
+      type: ActionTypes.ORDER_DETAILS_FAIL,
+      payload: message,
+    });
+  }
+};
+

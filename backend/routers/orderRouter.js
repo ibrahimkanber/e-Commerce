@@ -1,6 +1,6 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
-import { getOrderDetail, updateOrder,getOrderHistoryList, getAllOrders } from "../controlers/orderController.js";
+import { getOrderDetail, updateOrder,getOrderHistoryList, getAllOrders, deleteOrder,deliverOrder } from "../controlers/orderController.js";
 import { isAdmin, isAuth } from "../middlewares/authMiddleware.js";
 import Order from "../models/orderModel.js"
 const orderRouter = express.Router();
@@ -37,6 +37,9 @@ orderRouter.get("/",isAuth,isAdmin,getAllOrders)
 
 orderRouter.put("/:id/pay",isAuth,updateOrder)
 
-orderRouter.put("/:id/pay",isAuth,updateOrder)
+orderRouter.put("/:id/deliver",isAuth,isAdmin,deliverOrder)
+
+
+orderRouter.delete("/:id",isAuth,isAdmin,deleteOrder)
 
 export default orderRouter

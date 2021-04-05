@@ -1,7 +1,7 @@
 import {combineReducers} from "redux"
 import { authReducerRegister, authReducerSignIn } from "./authReducer"
 import { cartReducer } from "./cartReducers"
-import { orderAllListReducer, orderDetailsReducer, orderListReducer, orderPayReducer, orderReducer } from "./orderReducers"
+import { orderAllListReducer, orderDeleteReducer, orderDeliverReducer, orderDetailsReducer, orderListReducer, orderPayReducer, orderReducer } from "./orderReducers"
 import { createProductReducer, deleteProductReducer, productDetailsReducer,productListReducer, updateProductReducer } from "./productReducers"
 import { updateUserProfileReducer, userDetailsReducer } from "./userReducer"
 
@@ -21,5 +21,7 @@ export const rootReducer=combineReducers({
     createProduct:createProductReducer,
     updateProduct:updateProductReducer,
     deleteProduct:deleteProductReducer,
-    allOrders:orderAllListReducer
+    allOrders:orderAllListReducer,
+    orderDelete:orderDeleteReducer,
+    orderDeliver:orderDeliverReducer
 })

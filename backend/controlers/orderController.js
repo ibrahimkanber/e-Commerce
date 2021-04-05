@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js"
+
 export const getOrderDetail=asyncHandler(async(req,res)=>{
 
     const order=await Order.findById(req.params.id)
@@ -44,6 +45,37 @@ export const getAllOrders=asyncHandler(async(req,res)=>{
     
     const orders=await Order.find({}).populate("user","name")
     res.send(orders)
+
+
+})
+
+export const deleteOrder=asyncHandler(async(req,res)=>{
+    const id=req.params.id
+    const order=await Order.findById(id)
+
+    if(order){
+        const deletedOrder=await order.remove()
+        res.send({message:'Order deleted',order:deletedOrder})
+    }else{
+        res.status(404).send({message:"Order Not found"})
+    }
+    
+
+
+})
+export const deliverOrder=asyncHandler(async(req,res)=>{
+    
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      order.isDelivered = true;
+      order.deliveredAt = Date.now();
+
+      const updatedOrder = await order.save();
+      res.send({ message: 'Order Delivered', order: updatedOrder });
+    } else {
+      res.status(404).send({ message: 'Order Not Found' });
+    }
+    
 
 
 })
