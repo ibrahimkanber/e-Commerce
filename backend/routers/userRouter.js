@@ -1,6 +1,6 @@
 import express from "express";
-import { register, seed, signIn, userDetail,updateUserProfile } from "../controlers/userControllers.js";
-import { isAuth } from "../middlewares/authMiddleware.js";
+import { register, seed, signIn, userDetail,updateUserProfile, getUserList } from "../controlers/userControllers.js";
+import { isAdmin, isAuth } from "../middlewares/authMiddleware.js";
 
 const userRouter = express.Router();
 
@@ -13,5 +13,7 @@ userRouter.post("/register",register);
 userRouter.get("/:id",isAuth,userDetail);
 
 userRouter.put("/profile",isAuth,updateUserProfile)
+
+userRouter.get("/",isAuth,isAdmin,getUserList)
 
 export default userRouter;

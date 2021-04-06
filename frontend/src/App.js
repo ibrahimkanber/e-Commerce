@@ -7,7 +7,16 @@ import { useSelector } from "react-redux";
 import { SignInPage } from "./pages/SignInPage";
 import { useActions } from "./customhooks/useActions";
 import { Shipping } from "./pages/Shipping";
-import { OrderDetailPage, OrderHistoryPage, PaymentPage, ProfilePage,ProductListPage,ProductEditPage, OrderListPage } from "./pages";
+import {
+  OrderDetailPage,
+  OrderHistoryPage,
+  PaymentPage,
+  ProfilePage,
+  ProductListPage,
+  ProductEditPage,
+  OrderListPage,
+  UserListPage,
+} from "./pages";
 import { PlaceOrderPage } from "./pages";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { AdminRoute } from "./components";
@@ -61,33 +70,37 @@ function App() {
             <Link to="/signin">Sign In</Link>
           )}
 
-          {
-            userInfo && userInfo.isAdmin && (
-              <div className="dropdown">
-                <Link to="#admin">Admin {' '} <i className="fa fa-caret-down"></i></Link>
-                <ul className="dropdown-content">
-                  <li>
-                    <Link to="/dashboard">Dashboard</Link>
-                  </li>
-                  <li>
-                    <Link to="/productlist">Products</Link>
-                  </li>
-                  <li>
-                    <Link to="/orderlist">Orders</Link>
-                  </li>
-                  <li>
-                    <Link to="/userist">Users</Link>
-                  </li>
-                </ul>
-              </div>
-            )
-          }
+          {userInfo && userInfo.isAdmin && (
+            <div className="dropdown">
+              <Link to="#admin">
+                Admin <i className="fa fa-caret-down"></i>
+              </Link>
+              <ul className="dropdown-content">
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <Link to="/productlist">Products</Link>
+                </li>
+                <li>
+                  <Link to="/orderlist">Orders</Link>
+                </li>
+                <li>
+                  <Link to="/userlist">Users</Link>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </header>
       <main>
         <Route exact path="/cart/:id?" component={CartPage} />
         <Route exact path="/product/:id" component={ProductPage} />
-        <AdminRoute exact path="/product/:id/edit" component={ProductEditPage} />
+        <AdminRoute
+          exact
+          path="/product/:id/edit"
+          component={ProductEditPage}
+        />
         <Route exact path="/" component={HomePage} />
         <Route exact path="/signin" component={SignInPage} />
         <Route exact path="/register" component={RegisterPage} />
@@ -99,6 +112,7 @@ function App() {
         <PrivateRoute exact path="/profile" component={ProfilePage} />
         <AdminRoute exact path="/productlist" component={ProductListPage} />
         <AdminRoute exact path="/orderlist" component={OrderListPage} />
+        <AdminRoute exact path="/userlist" component={UserListPage} />
       </main>
       <footer className="row center">All right reserved</footer>
     </div>
