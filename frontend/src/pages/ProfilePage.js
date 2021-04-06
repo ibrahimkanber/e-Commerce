@@ -9,6 +9,9 @@ const ProfilePage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [sellerName, setSellerName] = useState("");
+  const [sellerLogo, setSellerLogo] = useState("");
+  const [sellerDescription, setSellerDescription] = useState("");
 
   const updatedProfile=useSelector(state=>state.updateUserProfile)
   const {success:successUpdate,error:errorUpdate,loading:loadingUpdate}=updatedProfile
@@ -27,13 +30,19 @@ const ProfilePage = () => {
         setName(user.name)
         setEmail(user.email)
         setPassword(user.password)
+        if(user.seller){
+          setSellerName(user.seller.name)
+          setSellerLogo(user.seller.logo)
+          setSellerDescription(user.seller.description)
+        }
     }
   }, [getUserDetail, userInfo._id, user]);
 
+  console.log(user)
   //console.log(user);
   const submitHandler = (e) => {
     e.preventDefault();
-    updateUserProfile({userId:user._id,name,email,password})
+    updateUserProfile({userId:user._id,name,email,password,sellerName,sellerLogo,sellerDescription})
   };
 
   return (
@@ -82,6 +91,41 @@ const ProfilePage = () => {
                 onChange={e=>setPassword(e.target.value)}
               ></input>
             </div>
+            {user.isSeller && (
+              <>
+              <h2>Seller</h2>
+              <div>
+                <label htmlFor="sellerName">Seller Name</label>
+                <input
+                placeholder="Enter Seller Name"
+                onChange={e=>setSellerName(e.target.value)}
+                id="sellerName"
+                type="text"
+                value={sellerName}
+                />
+              </div>
+              <div>
+                <label htmlFor="sellerLogo">Seller Logo</label>
+                <input
+                placeholder="Enter Seller Logo"
+                onChange={e=>setSellerLogo(e.target.value)}
+                id="sellerLogo"
+                type="text"
+                value={sellerLogo}
+                />
+              </div>
+              <div>
+                <label htmlFor="sellerDescription">Seller Description</label>
+                <input
+                placeholder="Enter Seller Description"
+                onChange={e=>setSellerDescription(e.target.value)}
+                id="sellerDescription"
+                type="text"
+                value={sellerDescription}
+                />
+              </div>
+              </>
+            )}
             <div>
               <label />
               <button className="primary" type="button" onClick={submitHandler}>

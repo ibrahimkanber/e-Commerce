@@ -20,7 +20,7 @@ import {
 } from "./pages";
 import { PlaceOrderPage } from "./pages";
 import { PrivateRoute } from "./components/PrivateRoute";
-import { AdminRoute } from "./components";
+import { AdminRoute, SellerRoute } from "./components";
 
 function App() {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -71,6 +71,23 @@ function App() {
             <Link to="/signin">Sign In</Link>
           )}
 
+          {userInfo && userInfo.isSeller && (
+            <div className="dropdown">
+              <Link to="#seller">
+                Seller <i className="fa fa-caret-down"></i>
+              </Link>
+              <ul className="dropdown-content">
+                <li>
+                  <Link to="/productlist/seller">Products</Link>
+                </li>
+                <li>
+                  <Link to="/orderlist/seller">Orders</Link>
+                </li>
+             
+              </ul>
+            </div>
+          )}
+
           {userInfo && userInfo.isAdmin && (
             <div className="dropdown">
               <Link to="#admin">
@@ -115,6 +132,8 @@ function App() {
         <AdminRoute exact path="/orderlist" component={OrderListPage} />
         <AdminRoute exact path="/userlist" component={UserListPage} />
         <AdminRoute exact path="/user/:id/edit" component={UserEditPage} />
+        <SellerRoute exact path="/productlist/seller" component={ProductListPage} />
+        <SellerRoute exact path="/order/seller" component={OrderListPage} />
       </main>
       <footer className="row center">All right reserved</footer>
     </div>
