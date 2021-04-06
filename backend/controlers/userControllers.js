@@ -91,7 +91,47 @@ export const getUserList = asyncHandler(async (req,res) => {
   const users=await User.find({})
 
   res.send(users)
-  
 
+});
+
+export const deleteUser = asyncHandler(async (req,res) => {
+ 
+  const user=await User.findById(req.params.id)
+
+  if(user){
+    if(user.isAdmin){
+      res.status(400).send({message:"Can Nort delete Admin User"})
+      return
+    }
+    const deletedUser= await user.remove()
+
+    res.send({message:"User deleted",user:deletedUser})
+
+  }else{
+    res.status(404.).send({message:"User not found"})
+
+  }
+
+
+});
+
+
+export const updateUserFromAdminPanel = asyncHandler(async (req,res) => {
+  const user=await User.findById(req.params.id)
+
+  if(user){
+      user.name=req.body.name || user.name
+      user.email=req.body.email || user.email
+      user.isSeller = req.body.isSeller || user.isSeller;
+      user.isAdmin = req.body.isAdmin|| user.isAdmin;
+      if(req.body.password){
+        user.password=bcrypt.hashSync(req.body.password,8)
+      }
+
+    const updatedUser=await user.save()
+    res.send({message:"User Updated",user:updatedUser})
+  }else{
+    res.status(404).send({message:"User not found"})
+  }
 
 });

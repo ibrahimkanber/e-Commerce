@@ -16,6 +16,7 @@ import {
   ProductEditPage,
   OrderListPage,
   UserListPage,
+  UserEditPage,
 } from "./pages";
 import { PlaceOrderPage } from "./pages";
 import { PrivateRoute } from "./components/PrivateRoute";
@@ -113,6 +114,7 @@ function App() {
         <AdminRoute exact path="/productlist" component={ProductListPage} />
         <AdminRoute exact path="/orderlist" component={OrderListPage} />
         <AdminRoute exact path="/userlist" component={UserListPage} />
+        <AdminRoute exact path="/user/:id/edit" component={UserEditPage} />
       </main>
       <footer className="row center">All right reserved</footer>
     </div>

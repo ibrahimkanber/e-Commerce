@@ -12,6 +12,8 @@ export const userDetailsReducer=(state={loading:true},action)=>{
 
         case ActionTypes.USER_DETAIL_FAIL:
             return {loading:false,error:action.payload}
+        case ActionTypes.USER_DETAIL_RESET:
+            return {loading:true}
     
         default:
             return state;
@@ -38,7 +40,7 @@ export const updateUserProfileReducer=(state={},action)=>{
     }
 }
 
-export const userListReducer=(state={},action)=>{
+export const userListReducer=(state={loading:true},action)=>{
 
     switch (action.type) {
         case ActionTypes.USER_LIST_REQUEST:
@@ -58,3 +60,48 @@ export const userListReducer=(state={},action)=>{
             return state;
     }
 }
+
+
+export const userDeleteReducer=(state={},action)=>{
+
+    switch (action.type) {
+        case ActionTypes.USER_DELETE_REQUEST:
+
+            return {loading:true}
+        case ActionTypes.USER_DELETE_SUCCESS:
+
+            return {loading:false,success:true}  
+
+        case ActionTypes.USER_DELETE_FAIL:
+            return {loading:false,error:action.payload}
+
+        case ActionTypes.USER_DELETE_RESET:
+            return {}
+    
+        default:
+            return state;
+    }
+}
+
+
+export const updateUserFromAdminReducer=(state={},action)=>{
+
+    switch (action.type) {
+        case ActionTypes.USER_UPDATE_FROM_ADMIN_REQUEST:
+
+            return {loading:true,}
+        case ActionTypes.USER_UPDATE_FROM_ADMIN_SUCCESS:
+
+            return {loading:false,success:true}  
+
+        case ActionTypes.USER_UPDATE_FROM_ADMIN_FAIL:
+            return {loading:false,error:action.payload}
+
+        case ActionTypes.USER_UPDATE_FROM_ADMIN_RESET:
+            return {}
+    
+        default:
+            return state;
+    }
+}
+

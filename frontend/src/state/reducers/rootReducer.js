@@ -18,7 +18,9 @@ import {
   updateProductReducer,
 } from "./productReducers";
 import {
+  updateUserFromAdminReducer,
   updateUserProfileReducer,
+  userDeleteReducer,
   userDetailsReducer,
   userListReducer,
 } from "./userReducer";
@@ -42,4 +44,6 @@ export const rootReducer = combineReducers({
   orderDelete: orderDeleteReducer,
   orderDeliver: orderDeliverReducer,
   userList: userListReducer,
+  userDelete:userDeleteReducer,
+  userUpdate:updateUserFromAdminReducer
 });
