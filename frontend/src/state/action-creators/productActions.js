@@ -1,12 +1,12 @@
 import axios from "axios";
 import * as ActionTypes from "../action-types";
 
-export const getProductList = ({seller="",name=""}) => async (dispatch) => {
+export const getProductList = ({seller="",name="",category=""}) => async (dispatch) => {
   dispatch({
     type: ActionTypes.PRODUCT_LIST_REQUEST,
   });
   try {
-    const { data } = await axios.get( `/api/products?seller=${seller}&name=${name}` );
+    const { data } = await axios.get( `/api/products?seller=${seller}&name=${name}&category=${category}` );
     dispatch({
       type: ActionTypes.PRODUCT_LIST_SUCCESS,
       payload: data,
@@ -120,6 +120,25 @@ export const deleteProduct = (productId) => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
+    });
+  }
+};
+
+
+export const getCategorieList = () => async (dispatch) => {
+  dispatch({
+    type: ActionTypes.PRODUCT_CATEGORY_LIST_REQUEST,
+  });
+  try {
+    const { data } = await axios.get( `/api/products/categories` );
+    dispatch({
+      type: ActionTypes.PRODUCT_CATEGORY_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ActionTypes.PRODUCT_CATEGORY_LIST_FAIL,
+      payload: error.message,
     });
   }
 };

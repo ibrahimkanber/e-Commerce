@@ -22,30 +22,51 @@ import {
 } from "./pages";
 import { PlaceOrderPage } from "./pages";
 import { PrivateRoute } from "./components/PrivateRoute";
-import { AdminRoute, SearchBox, SellerRoute } from "./components";
+import { AdminRoute, SearchBox, SellerRoute,LoadingBox,MessageBox } from "./components";
+import { useEffect, useState } from "react";
 
 function App() {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const { userInfo } = useSelector((state) => state.authSignIn);
-  const { signOut, removeAllFromCart } = useActions();
+  const { signOut, removeAllFromCart, getCategorieList } = useActions();
+  const [sidebarIsOpen, setSidebarIsOpen] = useState();
 
   const signoutHandler = () => {
     signOut();
     removeAllFromCart();
   };
 
+  const categoryInfo = useSelector((state) => state.categoryList);
+
+  const {
+    loading: loadingCategories,
+    error: errorCategories,
+    categories,
+  } = categoryInfo;
+
+  useEffect(() => {
+    getCategorieList();
+  }, []);
+
   return (
     <div className="grid-container">
       <header className="row">
         <div>
+          <button
+          type="button"
+          className="open-sidebar"
+          onClick={()=>setSidebarIsOpen(true)}
+          >
+            <i className="fa fa-bars"></i>
+          </button>
           <Link className="brand" to="/">
             amazona
           </Link>
         </div>
         <div>
-          <Route render={({history})=><SearchBox history={history}/>} />
+          <Route render={({ history }) => <SearchBox history={history} />} />
         </div>
-     
+
         <div>
           <Link to="/cart">
             Cart
@@ -116,6 +137,37 @@ function App() {
           )}
         </div>
       </header>
+      <aside className={sidebarIsOpen ? 'open' : ''}>
+        <ul className="categories">
+          <li>
+            <strong>Categories</strong>
+            <button
+              onClick={() => setSidebarIsOpen(false)}
+              className="close-sidebar"
+              type="button"
+            >
+              <i className="fa fa-close"></i>
+            </button>
+          </li>
+          {loadingCategories ? (
+            <LoadingBox></LoadingBox>
+          ) : errorCategories ? (
+            <MessageBox variant="danger">{errorCategories}</MessageBox>
+          ) : (
+            categories.map(c=>(
+              <li key={c}>
+                <Link 
+                to={`/search/category/${c}`}
+                onClick={()=>setSidebarIsOpen(false)}
+
+                >{c}</Link>
+              </li>
+            ))
+          )
+            
+          }
+        </ul>
+      </aside>
       <main>
         <Route exact path="/seller/:id" component={SellerPage} />
         <Route exact path="/cart/:id?" component={CartPage} />
@@ -132,7 +184,16 @@ function App() {
         <Route exact path="/payment" component={PaymentPage} />
         <Route exact path="/placeorder" component={PlaceOrderPage} />
         <Route exact path="/order/:id" component={OrderDetailPage} />
-        <Route exact path="/search/name/:name?" component={SearchPage}/>
+        <Route exact path="/search/name/:name?" component={SearchPage} />
+
+        <Route exact path="/search/category/:category" component={SearchPage} />
+
+        <Route
+          exact
+          path="/search/category/:category/name/:name"
+          component={SearchPage}
+        />
+
         <Route exact path="/orderhistory" component={OrderHistoryPage} />
         <PrivateRoute exact path="/profile" component={ProfilePage} />
         <AdminRoute exact path="/productlist" component={ProductListPage} />

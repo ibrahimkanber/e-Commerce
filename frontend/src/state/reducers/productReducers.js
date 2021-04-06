@@ -2,6 +2,7 @@ import * as ActionTypes from "../action-types"
 
 const initialState_productList={
     products:[],
+    loading:true
     
 }
 export const productListReducer=(state=initialState_productList,action)=>{
@@ -94,5 +95,19 @@ export const deleteProductReducer=(state={},action)=>{
     
         default:
             return state;
+    }
+}
+
+
+export const categoryListReducer=(state={loading:true,categories:[]},action)=>{
+    switch (action.type) {
+        case ActionTypes.PRODUCT_CATEGORY_LIST_REQUEST:
+            return {loading:true};
+        case ActionTypes.PRODUCT_CATEGORY_LIST_SUCCESS:
+            return {loading:false,categories:action.payload,error:false};
+        case ActionTypes.PRODUCT_CATEGORY_LIST_FAIL:
+            return {loading:false,error:action.payload,products:[]};
+        default:
+            return state ;
     }
 }

@@ -63,3 +63,14 @@ export const deleteProduct = asyncHandler(async (req, res) => {
   }
 
 });
+
+
+export const getCategories = asyncHandler(async (req, res) => {
+  console.log("helooo")
+  const categories=await Product.find().distinct("category")
+  console.log("categories==>",categories)
+  res.send(categories)
+
+});
+
+

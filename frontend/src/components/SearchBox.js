@@ -5,9 +5,9 @@ const SearchBox = (props) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (name) {
+  
       props.history.push(`/search/name/${name}`);
-    }
+    
     setName("")
   };
   return (

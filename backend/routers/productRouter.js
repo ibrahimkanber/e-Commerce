@@ -11,19 +11,23 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  getCategories,
 } from "../controlers/productController.js";
 const productRouter = express.Router();
+
+productRouter.get("/categories",getCategories)
 
 productRouter.get(
   "/",
   asyncHandler(async (req, res) => {
     const seller = req.query.seller || "";
     const name = req.query.name || "";
-
+    const category = req.query.category || "";
+    console.log("category:==>",category)
     const sellerFilter = seller ? { seller } : {};
     const nameFilter = name ? { name:{$regex: name,$options:'i'} } : {};
-
-    const products = await Product.find({ ...sellerFilter,...nameFilter }).populate(
+    const categoryFilter=category ? { category } : {};
+    const products = await Product.find({ ...sellerFilter,...nameFilter,...categoryFilter}).populate(
       "seller",
       "seller.name seller.logo"
     );
@@ -54,6 +58,8 @@ productRouter.get(
     }
   })
 );
+
+
 
 productRouter.post("/", isAuth, isSellerOrAdmin, createProduct);
 

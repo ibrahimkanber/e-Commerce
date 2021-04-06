@@ -1,17 +1,36 @@
 import React, { useEffect } from "react";
 import { useActions } from "../customhooks/useActions";
-import { useParams } from "react-router-dom";
-import {useSelector} from "react-redux"
-import { Product,LoadingBox,MessageBox} from "../components";
+import { Link, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Product, LoadingBox, MessageBox } from "../components";
 const SearchPage = (props) => {
-  const { name = "all" } = useParams();
+
+  const { name = "all",category="all" } = useParams();
+
   const { getProductList } = useActions();
   const productsInfo = useSelector((state) => state.productList);
 
   const { loading, error, products } = productsInfo;
+
+  const categoryInfo = useSelector((state) => state.categoryList);
+
+  const {
+    loading: loadingCategories,
+    error: errorCategories,
+    categories,
+  } = categoryInfo;
+  
   useEffect(() => {
-    getProductList({ name: name !== "all" ? name : "" });
-  }, [name]);
+    getProductList({ name: name !== "all" ? name : "",category: category !== "all" ? category : "" });
+  }, [name,category]);
+
+
+  const getFilterUrl=(filter)=>{
+      const filterCategory=filter.category || category
+      const filterName=filter.name || name
+
+      return `/search/category/${filterCategory}/name/${filterName}`
+  }
 
   return (
     <div>
@@ -27,9 +46,24 @@ const SearchPage = (props) => {
       <div className="row top">
         <div className="col-1">
           <h3>Department</h3>
-          <ul>
-            <li>Category1</li>
-          </ul>
+
+          {loadingCategories ? (
+            <LoadingBox></LoadingBox>
+          ) : errorCategories ? (
+            <MessageBox variant="danger">{errorCategories}</MessageBox>
+          ) : (
+            <ul>
+             {categories.map(c=>(
+               <li key={c}>
+                 <Link 
+                 className={c===category? "active":""}
+                 to={getFilterUrl({category:c})}
+                 
+                 >{c}</Link>
+               </li>
+             ))}
+            </ul>
+          )}
         </div>
         <div className="col-3">
           {loading ? (
