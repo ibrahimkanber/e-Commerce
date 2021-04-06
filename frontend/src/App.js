@@ -193,6 +193,11 @@ function App() {
           path="/search/category/:category/name/:name"
           component={SearchPage}
         />
+        <Route
+          exact
+          path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order"
+          component={SearchPage}
+        />
 
         <Route exact path="/orderhistory" component={OrderHistoryPage} />
         <PrivateRoute exact path="/profile" component={ProfilePage} />

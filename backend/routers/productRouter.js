@@ -15,22 +15,46 @@ import {
 } from "../controlers/productController.js";
 const productRouter = express.Router();
 
-productRouter.get("/categories",getCategories)
+productRouter.get("/categories", getCategories);
 
 productRouter.get(
   "/",
   asyncHandler(async (req, res) => {
     const seller = req.query.seller || "";
+    const order = req.query.order || "";
     const name = req.query.name || "";
     const category = req.query.category || "";
-    console.log("category:==>",category)
+    const min =
+      req.query.min && Number(req.query.min) !== 0 ? Number(req.query.min) : 0;
+    const max =
+      req.query.max && Number(req.query.max) !== 0 ? Number(req.query.max) : 0;
+    const rating =
+      req.query.rating && Number(req.query.rating) !== 0
+        ? Number(req.query.rating)
+        : 0;
+
     const sellerFilter = seller ? { seller } : {};
-    const nameFilter = name ? { name:{$regex: name,$options:'i'} } : {};
-    const categoryFilter=category ? { category } : {};
-    const products = await Product.find({ ...sellerFilter,...nameFilter,...categoryFilter}).populate(
-      "seller",
-      "seller.name seller.logo"
-    );
+
+    const nameFilter = name ? { name: { $regex: name, $options: "i" } } : {};
+    const categoryFilter = category ? { category } : {};
+    const priceFilter = min && max ? { price: { $gte: min, $lte: max } } : {};
+    const ratingFilter = rating ? { rating: { $gte: rating } } : {};
+    const sortOrder =
+      order === "lowest"
+        ? { price: 1 }
+        : order === "highest"
+        ? { price: -1 }
+        : order === "toprated"
+        ? { rating: -1 }
+        : { _id: -1 };
+
+    const products = await Product.find({
+      ...sellerFilter,
+      ...nameFilter,
+      ...categoryFilter,
+      ...priceFilter,
+      ...ratingFilter,
+    }).populate("seller", "seller.name seller.logo").sort(sortOrder);
 
     res.send(products);
   })
@@ -58,8 +82,6 @@ productRouter.get(
     }
   })
 );
-
-
 
 productRouter.post("/", isAuth, isSellerOrAdmin, createProduct);
 
