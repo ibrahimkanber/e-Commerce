@@ -66,7 +66,7 @@ const ProductPage = () => {
             <div className="col-1">
               <div className="card card-body">
                 <ul>
-                  <li>Seller <h2> <Link to={`/seller/${product.seller._id}`}>{product?.seller?.seller?.name}</Link>  </h2>
+                  <li>Seller <h2> <Link to={`/seller/${product?.seller?._id}`}>{product?.seller?.seller?.name}</Link>  </h2>
                   <Rating 
                   rating={product?.seller?.seller?.rating}
                   numReviews={product?.seller?.seller?.numReviews}

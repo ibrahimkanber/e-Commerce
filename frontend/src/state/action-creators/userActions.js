@@ -184,3 +184,28 @@ export const updateUserFromAdmin=(user)=>async(dispatch,getState)=>{
 
 
 }
+
+
+export const getTopSellers = () => async (dispatch) => {
+  dispatch({ type: ActionTypes.USER_TOP_SELLER_LIST_REQUEST });
+
+  try {
+    const { data } = await axios.get(`/api/users/top-sellers`);
+
+    dispatch({
+        type:ActionTypes.USER_TOP_SELLER_LIST_SUCCESS,
+        payload:data
+    })
+    
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    dispatch({
+      type: ActionTypes.USER_TOP_SELLER_LIST_FAIL,
+      payload: message,
+    });
+  }
+};

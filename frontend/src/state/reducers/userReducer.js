@@ -105,3 +105,25 @@ export const updateUserFromAdminReducer=(state={},action)=>{
     }
 }
 
+
+export const userTopSellerListReducer=(state={loading:true},action)=>{
+
+    switch (action.type) {
+        case ActionTypes.USER_TOP_SELLER_LIST_REQUEST:
+
+            return {loading:true}
+        case ActionTypes.USER_TOP_SELLER_LIST_SUCCESS:
+
+            return {loading:false,users:action.payload}  
+
+        case ActionTypes.USER_TOP_SELLER_LIST_FAIL:
+            return {loading:false,error:action.payload}
+
+        case ActionTypes.USER_TOP_SELLER_LIST_RESET:
+            return {}
+    
+        default:
+            return state;
+    }
+}
+

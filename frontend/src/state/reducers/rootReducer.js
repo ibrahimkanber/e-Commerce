@@ -23,6 +23,7 @@ import {
   userDeleteReducer,
   userDetailsReducer,
   userListReducer,
+  userTopSellerListReducer,
 } from "./userReducer";
 
 export const rootReducer = combineReducers({
@@ -45,5 +46,6 @@ export const rootReducer = combineReducers({
   orderDeliver: orderDeliverReducer,
   userList: userListReducer,
   userDelete:userDeleteReducer,
-  userUpdate:updateUserFromAdminReducer
+  userUpdate:updateUserFromAdminReducer,
+  userTopSellersList:userTopSellerListReducer
 });

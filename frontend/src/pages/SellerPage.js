@@ -16,6 +16,8 @@ const SellerPage = (props) => {
     products,
   } = productsInfo;
 
+ 
+
   useEffect(() => {
     getUserDetail(sellerId);
     getProductList({ seller: sellerId });
@@ -34,18 +36,18 @@ const SellerPage = (props) => {
                 <div className="p-1">
                   <img
                     className="small"
-                    src={user.seller.logo}
-                    alt={user.seller.name}
+                    src={user?.seller?.logo}
+                    alt={user?.seller?.name}
                   />
                 </div>
                 <div className="p-1">
-                  <h1>{user.seller.name}</h1>
+                  <h1>{user?.seller?.name}</h1>
                 </div>
               </div>
             </li>
             <li>
               <Rating
-                rating={user.seller.rating}
+                rating={user?.seller.rating}
                 numReviews={`${user.seller.numReviews}  reviews`}
               ></Rating>
             </li>

@@ -18,10 +18,11 @@ import {
   UserListPage,
   UserEditPage,
   SellerPage,
+  SearchPage,
 } from "./pages";
 import { PlaceOrderPage } from "./pages";
 import { PrivateRoute } from "./components/PrivateRoute";
-import { AdminRoute, SellerRoute } from "./components";
+import { AdminRoute, SearchBox, SellerRoute } from "./components";
 
 function App() {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -41,6 +42,10 @@ function App() {
             amazona
           </Link>
         </div>
+        <div>
+          <Route render={({history})=><SearchBox history={history}/>} />
+        </div>
+     
         <div>
           <Link to="/cart">
             Cart
@@ -127,6 +132,7 @@ function App() {
         <Route exact path="/payment" component={PaymentPage} />
         <Route exact path="/placeorder" component={PlaceOrderPage} />
         <Route exact path="/order/:id" component={OrderDetailPage} />
+        <Route exact path="/search/name/:name?" component={SearchPage}/>
         <Route exact path="/orderhistory" component={OrderHistoryPage} />
         <PrivateRoute exact path="/profile" component={ProfilePage} />
         <AdminRoute exact path="/productlist" component={ProductListPage} />
