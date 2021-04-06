@@ -26,7 +26,7 @@ const userSchema=new mongoose.Schema({
         required:true
     },
     seller:{
-        type:String,
+        name:String,
         logo:String,
         description:String,
         rating:{

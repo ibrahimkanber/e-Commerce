@@ -5,6 +5,7 @@ export const createProduct = asyncHandler(async (req, res) => {
   console.log("deneme")
   const product = new Product({
     name: "Sample Product",
+    seller:req.user._id,
     category: "sample category",
     image: "/images/p1.jpg",
     price: 120,
@@ -36,7 +37,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
 
     const updatedProduct=await product.save()
 
-    res.send({message:"Product updated",product:updateProduct})
+    res.send({message:"Product updated",product:updatedProduct})
   }else{
     res.status(404.).send({message:"Product not found"})
 

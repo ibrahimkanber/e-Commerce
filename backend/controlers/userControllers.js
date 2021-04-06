@@ -132,13 +132,15 @@ export const updateUserFromAdminPanel = asyncHandler(async (req,res) => {
   if(user){
       user.name=req.body.name || user.name
       user.email=req.body.email || user.email
-      user.isSeller = req.body.isSeller || user.isSeller;
-      user.isAdmin = req.body.isAdmin|| user.isAdmin;
+      console.log("ibo",req.body.isSeller)
+      user.isSeller = req?.body?.isSeller;
+      user.isAdmin = req.body.isAdmin ;
       if(req.body.password){
         user.password=bcrypt.hashSync(req.body.password,8)
       }
-
+    
     const updatedUser=await user.save()
+    console.log("updatedUser==>",updatedUser)
     res.send({message:"User Updated",user:updatedUser})
   }else{
     res.status(404).send({message:"User not found"})

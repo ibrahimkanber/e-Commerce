@@ -12,7 +12,7 @@ const HomePage = () => {
 
   
   useEffect(() => {
-    getProductList();
+    getProductList({});
   }, []);
 
   return (

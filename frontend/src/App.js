@@ -17,6 +17,7 @@ import {
   OrderListPage,
   UserListPage,
   UserEditPage,
+  SellerPage,
 } from "./pages";
 import { PlaceOrderPage } from "./pages";
 import { PrivateRoute } from "./components/PrivateRoute";
@@ -83,7 +84,6 @@ function App() {
                 <li>
                   <Link to="/orderlist/seller">Orders</Link>
                 </li>
-             
               </ul>
             </div>
           )}
@@ -112,6 +112,7 @@ function App() {
         </div>
       </header>
       <main>
+        <Route exact path="/seller/:id" component={SellerPage} />
         <Route exact path="/cart/:id?" component={CartPage} />
         <Route exact path="/product/:id" component={ProductPage} />
         <AdminRoute
@@ -132,8 +133,12 @@ function App() {
         <AdminRoute exact path="/orderlist" component={OrderListPage} />
         <AdminRoute exact path="/userlist" component={UserListPage} />
         <AdminRoute exact path="/user/:id/edit" component={UserEditPage} />
-        <SellerRoute exact path="/productlist/seller" component={ProductListPage} />
-        <SellerRoute exact path="/order/seller" component={OrderListPage} />
+        <SellerRoute
+          exact
+          path="/productlist/seller"
+          component={ProductListPage}
+        />
+        <SellerRoute exact path="/orderlist/seller" component={OrderListPage} />
       </main>
       <footer className="row center">All right reserved</footer>
     </div>

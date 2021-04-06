@@ -140,7 +140,7 @@ export const getOrderHistory = () => async (dispatch, getState) => {
   }
 };
 
-export const getAllOrders = () => async (dispatch, getState) => {
+export const getAllOrders = ({seller=""}) => async (dispatch, getState) => {
   dispatch({ type: ActionTypes.ORDER_ALL_LIST_REQUEST });
 
   const {
@@ -148,7 +148,7 @@ export const getAllOrders = () => async (dispatch, getState) => {
   } = getState();
 
   try {
-    const { data } = await axios.get("/api/orders", {
+    const { data } = await axios.get( `/api/orders?seller${seller}` , {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },

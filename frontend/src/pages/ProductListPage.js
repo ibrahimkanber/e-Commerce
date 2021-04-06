@@ -8,9 +8,12 @@ import {
   PRODUCT_DELETE_RESET,
 } from "../state/action-types";
 
-const ProductListPage = () => {
+const ProductListPage = (props) => {
+  const sellerMode=props.match.path.indexOf("/seller")>=0
   const dispatch = useDispatch();
   const productsInfo = useSelector((state) => state.productList);
+  const authSignIn = useSelector((state) => state.authSignIn);
+  const {userInfo}=authSignIn;
 
   const deletedProduct = useSelector((state) => state.deleteProduct);
 
@@ -40,7 +43,7 @@ const ProductListPage = () => {
     if (successDelete) {
       dispatch({ type: PRODUCT_DELETE_RESET });
     }
-    getProductList();
+    getProductList({seller: sellerMode? userInfo._id:""});
   }, [createdProduct?._id, successDelete]);
 
   const deleteHandler = (product) => {
