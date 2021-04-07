@@ -1,18 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { Rating } from "../components";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useActions } from "../customhooks/useActions";
 import { LoadingBox, MessageBox } from "../components";
+import { PRODUCT_REVIEW_RESET } from "../state/action-types";
 
 const ProductPage = () => {
+  const dispatch = useDispatch();
+  const [rating, setRating] = useState(1);
+  const [comment, setComment] = useState();
   const history = useHistory();
   const [qty, setQty] = useState(1);
   const { id } = useParams();
-  const { getProductDetails } = useActions();
+  const { getProductDetails,createReview } = useActions();
   const productdata = useSelector((state) => state.productDetails);
-
   const { product, error, loading } = productdata;
+  const userProfile = useSelector((state) => state.authSignIn);
+  const { userInfo } = userProfile;
+  const productReviewInfo = useSelector((state) => state.createProductReview);
+  const {
+   
+    error: errorReview,
+    loading: loadingReview,
+    success: successReview,
+  } = productReviewInfo;
 
   console.log(error);
 
@@ -26,12 +38,25 @@ const ProductPage = () => {
   };
 
   useEffect(() => {
+    if (successReview) {
+      window.alert("Review submitted Successfully");
+      setRating("");
+      setComment("");
+      dispatch({ type: PRODUCT_REVIEW_RESET });
+    }
     getProductDetails(id);
-  }, []);
+  }, [successReview, id]);
 
   if (!product) {
     return <div>Product Not found</div>;
   }
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (comment && rating) {
+      createReview(id, { rating,comment, name: userInfo.name });
+    }
+  };
 
   return (
     <div>
@@ -66,13 +91,19 @@ const ProductPage = () => {
             <div className="col-1">
               <div className="card card-body">
                 <ul>
-                  <li>Seller <h2> <Link to={`/seller/${product?.seller?._id}`}>{product?.seller?.seller?.name}</Link>  </h2>
-                  <Rating 
-                  rating={product?.seller?.seller?.rating}
-                  numReviews={product?.seller?.seller?.numReviews}
-                  
-                  />
-                    </li>
+                  <li>
+                    Seller{" "}
+                    <h2>
+                      {" "}
+                      <Link to={`/seller/${product?.seller?._id}`}>
+                        {product?.seller?.seller?.name}
+                      </Link>{" "}
+                    </h2>
+                    <Rating
+                      rating={product?.seller?.seller?.rating}
+                      numReviews={product?.seller?.seller?.numReviews}
+                    />
+                  </li>
                   <li>
                     <div className="row">
                       <div>Price</div>
@@ -122,6 +153,71 @@ const ProductPage = () => {
                 </ul>
               </div>
             </div>
+          </div>
+          <div>
+            <h2 id="reviews">Reviews</h2>
+            {product.reviews.length === 0 && (
+              <MessageBox>There is no review</MessageBox>
+            )}
+            <ul>
+              {product.reviews.map((r) => (
+                <li key={r._id}>
+                  <strong>{r.name}</strong>
+                  <Rating rating={r.rating} caption=" " />
+                  <p>{r.createdAt.substring(0, 10)}</p>
+                  <p>{r.comment}</p>
+                </li>
+              ))}
+              <li>
+                {userInfo ? (
+                  <form className="form" onSubmit={submitHandler}>
+                    <div>
+                      <h2>Write a customer review</h2>
+                    </div>
+                    <div>
+                      <label htmlFor="rating">Rating</label>
+                      <select
+                        value={rating}
+                        id="rating"
+                        onChange={(e) => setRating(e.target.value)}
+                        defaultValue="1"
+                      >
+                        <option value="1">1-Poor</option>
+                        <option value="2">2-Fair</option>
+                        <option value="3">3-Good</option>
+                        <option value="4">4-Very good</option>
+                        <option value="5">5-Excellent</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label htmlFor="comment">Comment</label>
+                      <textarea
+                        id="comment"
+                        rows="10"
+                        onChange={(e) => setComment(e.target.value)}
+                        value={comment}
+                      ></textarea>
+                    </div>
+                    <div>
+                      <label />
+                      <button type="submit" className="primary">
+                        Submit
+                      </button>
+                    </div>
+                    <div>
+                      {loadingReview && <LoadingBox></LoadingBox>}
+                      {errorReview && (
+                        <MessageBox variant="danger">{errorReview}</MessageBox>
+                      )}
+                    </div>
+                  </form>
+                ) : (
+                  <MessageBox>
+                    Please <Link to="/signin">Sign In</Link> to write a review
+                  </MessageBox>
+                )}
+              </li>
+            </ul>
           </div>
         </div>
       )}

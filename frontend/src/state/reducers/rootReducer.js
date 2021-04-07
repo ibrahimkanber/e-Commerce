@@ -17,6 +17,7 @@ import {
   productDetailsReducer,
   productListReducer,
   updateProductReducer,
+  createPoductReviewReducer
 } from "./productReducers";
 import {
   updateUserFromAdminReducer,
@@ -49,5 +50,7 @@ export const rootReducer = combineReducers({
   userDelete:userDeleteReducer,
   userUpdate:updateUserFromAdminReducer,
   userTopSellersList:userTopSellerListReducer,
-  categoryList:categoryListReducer
+  categoryList:categoryListReducer,
+  createProductReview:createPoductReviewReducer,
+  userAddressMap:userDetailsReducer
 });

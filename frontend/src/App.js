@@ -24,6 +24,7 @@ import { PlaceOrderPage } from "./pages";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { AdminRoute, SearchBox, SellerRoute,LoadingBox,MessageBox } from "./components";
 import { useEffect, useState } from "react";
+import MapPage from "./pages/MapPage";
 
 function App() {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -201,6 +202,7 @@ function App() {
 
         <Route exact path="/orderhistory" component={OrderHistoryPage} />
         <PrivateRoute exact path="/profile" component={ProfilePage} />
+        <PrivateRoute exact path="/map" component={MapPage} />
         <AdminRoute exact path="/productlist" component={ProductListPage} />
         <AdminRoute exact path="/orderlist" component={OrderListPage} />
         <AdminRoute exact path="/userlist" component={UserListPage} />

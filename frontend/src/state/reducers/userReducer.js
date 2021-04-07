@@ -127,3 +127,14 @@ export const userTopSellerListReducer=(state={loading:true},action)=>{
     }
 }
 
+export const userAddressMapReducer=(state={},action)=>{
+
+    switch (action.type) {
+        case ActionTypes.USER_ADDRESS_MAP_CONFIRM:
+            return {address:action.payload}
+
+        default:
+            return state;
+    }
+}
+

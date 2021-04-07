@@ -111,3 +111,23 @@ export const categoryListReducer=(state={loading:true,categories:[]},action)=>{
             return state ;
     }
 }
+
+
+export const createPoductReviewReducer=(state={},action)=>{
+    switch (action.type) {
+        case  ActionTypes.PRODUCT_REVIEW_REQUEST:
+            return {loading:true}
+
+        case  ActionTypes.PRODUCT_REVIEW_SUCCESS:
+            return {loading:false,success:true,review:action.payload}
+
+        case ActionTypes.PRODUCT_REVIEW_FAIL:
+            return {loading:false,error:action.payload} 
+
+        case ActionTypes.PRODUCT_REVIEW_RESET:
+            return {} 
+    
+        default:
+            return state;
+    }
+}

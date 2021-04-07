@@ -12,6 +12,7 @@ import {
   updateProduct,
   deleteProduct,
   getCategories,
+  createProductReview,
 } from "../controlers/productController.js";
 const productRouter = express.Router();
 
@@ -84,6 +85,8 @@ productRouter.get(
 );
 
 productRouter.post("/", isAuth, isSellerOrAdmin, createProduct);
+
+productRouter.post("/:id/reviews", isAuth,createProductReview );
 
 productRouter.put("/:id", isAuth, isSellerOrAdmin, updateProduct);
 

@@ -142,3 +142,39 @@ export const getCategorieList = () => async (dispatch) => {
     });
   }
 };
+
+
+
+
+export const createReview= (productId,review) => async (dispatch, getState) => {
+  dispatch({
+    type: ActionTypes.PRODUCT_REVIEW_REQUEST,
+  });
+  const {
+    authSignIn: { userInfo },
+  } = getState();
+
+  try {
+    const { data } = await axios.post(
+      `/api/products/${productId}/reviews`,
+      review,
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+    );
+    dispatch({
+      type: ActionTypes.PRODUCT_REVIEW_SUCCESS,
+      payload: data.review,
+    });
+  } catch (error) {
+    dispatch({
+      type: ActionTypes.PRODUCT_REVIEW_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
